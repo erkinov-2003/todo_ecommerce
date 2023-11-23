@@ -17,7 +17,10 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   provider: ^6.1.1
-  flutter_native_splash: ^2.3.6
+  intl: ^0.18.1
+  shared_preferences: ^2.2.2
+  firebase_core: ^2.23.0
+  cloud_firestore: ^4.13.2
 
 dev_dependencies:
   flutter_test:
@@ -33,6 +36,14 @@ flutter:
   uses-material-design: true
 
 
-assets:
-  - assets/images/
-  - assets/icons/
+  assets:
+    - assets/icons/
+
+
+  fonts:
+     - family: Nunito-Regular
+       fonts:
+         - asset: assets/fonts/Nunito-Regular.ttf
+     - family: OverlockSC
+       fonts:
+         - asset: assets/fonts/OverlockSC-Regular.ttf
