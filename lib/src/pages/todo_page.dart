@@ -44,6 +44,7 @@ class _TodoPageState extends State<TodoPage> {
         child: Padding(
           padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
                 Row(
@@ -98,7 +99,7 @@ class _TodoPageState extends State<TodoPage> {
                         fontFamily: "OverlockSC",
                       ),
                   minLines: 1,
-                  maxLines: 25,
+                  maxLines: 40,
                 ),
               ],
             ),

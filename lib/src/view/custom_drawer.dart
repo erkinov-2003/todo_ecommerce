@@ -62,6 +62,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 fit: BoxFit.cover,
               ),
             ),
+            const Spacer(flex: 9),
+            const CustomDrawerButton(
+              text: "Log out",
+              widget: Image(
+                image: AssetImage(AppIcons.logOutIcons),
+                height: 24,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const Spacer(flex: 1),
           ],
         ),
       ),

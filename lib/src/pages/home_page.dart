@@ -4,6 +4,7 @@ import 'package:todo_ecommerce/src/common/constants/app_icons.dart';
 import 'package:todo_ecommerce/src/pages/todo_page.dart';
 import 'package:todo_ecommerce/src/view/custom_button.dart';
 import 'package:todo_ecommerce/src/view/custom_drawer.dart';
+import 'package:todo_ecommerce/src/view/shimmer.dart';
 
 import '../common/constants/app_colors.dart';
 
@@ -30,6 +31,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.backgroundsColor,
@@ -83,8 +85,8 @@ class _HomePageState extends State<HomePage> {
                         ),
                         Builder(builder: (context) {
                           return CustomButton(
-                            images: AppIcons.menuIcons,
-                            backgroundColor: AppColors.buttonColor,
+                            images: AppIcons.personIcons,
+                            backgroundColor: const Color(0xFF3c096c),
                             onPressed: () {
                               Scaffold.of(context).openEndDrawer();
                             },
@@ -92,10 +94,10 @@ class _HomePageState extends State<HomePage> {
                         }),
                       ],
                     ),
-                    const SizedBox(height: 30),
+                    SizedBox(height: size.height * 0.035),
                     Expanded(
                       child: SizedBox(
-                        height: 600,
+                        height: size.height * 0.708,
                         child: ListView.builder(
                           itemCount: docs?.length,
                           physics: const BouncingScrollPhysics(),
@@ -120,7 +122,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ),
                                     child: SizedBox(
-                                      height: 90,
+                                      height: size.height * 0.106,
                                       width: double.infinity,
                                       child: Padding(
                                         padding: const EdgeInsets.only(
@@ -143,7 +145,9 @@ class _HomePageState extends State<HomePage> {
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                             ),
-                                            const SizedBox(height: 10),
+                                            SizedBox(
+                                              height: size.height * 0.011,
+                                            ),
                                             Text(
                                               indexDocs?["description"],
                                               style: Theme.of(context)
