@@ -17,17 +17,30 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   provider: ^6.1.1
-  intl: ^0.18.1
-  shared_preferences: ^2.2.2
   firebase_core: ^2.23.0
   cloud_firestore: ^4.13.2
+  shimmer: ^3.0.0
+  flutter_native_splash: ^2.3.6
+  url_launcher: ^6.2.1
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  connectivity_plus: ^5.0.2
+  lottie: ^2.7.0
 
 dev_dependencies:
+  hive_generator:
+  build_runner:
+
   flutter_test:
     sdk: flutter
 
 
+
   flutter_lints: ^2.0.0
+flutter_native_splash:
+  color: "#000000"
+  image: assets/images/todo_images.png
+
 
 
 flutter:
@@ -38,6 +51,8 @@ flutter:
 
   assets:
     - assets/icons/
+    - assets/images/
+    - assets/lottie/
 
 
   fonts:

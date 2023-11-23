@@ -8,4 +8,6 @@ class AppIcons{
   static const infoIcons = "assets/icons/info.png";
   static const helpCenter = "assets/icons/help_center.png";
   static const addIcons = "assets/icons/add.png";
+  static const personIcons = "assets/icons/profile.png";
+  static const logOutIcons = "assets/icons/log_out.png";
 }

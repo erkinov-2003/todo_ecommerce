@@ -8,7 +8,7 @@ class FireStorageService {
     _storage.add({
       "title": todoModel.title,
       "description": todoModel.description,
-       "createTodo": todoModel.createTodo,
+      "times": DateTime.now(),
     });
   }
 }

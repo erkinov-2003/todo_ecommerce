@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:todo_ecommerce/src/view/info_dialog.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import '../common/constants/app_colors.dart';
 import '../common/constants/app_icons.dart';
 import 'drawer_button.dart';
 
@@ -12,14 +14,12 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-  bool values = true;
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Drawer(
-      backgroundColor: AppColors.backgroundsColor,
       width: size.width * 0.637,
+      backgroundColor: const Color(0xFF240046),
       child: Padding(
         padding: EdgeInsets.only(top: size.height * 0.070, left: 5, right: 5),
         child: Column(
@@ -27,40 +27,51 @@ class _CustomDrawerState extends State<CustomDrawer> {
             Text(
               "Notes",
               style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                    color: AppColors.whiteColor,
                     fontWeight: FontWeight.w500,
                     fontFamily: "OverlockSC",
+                    color: const Color(0xFF0096c7),
                   ),
             ),
             SizedBox(height: size.height * 0.023),
-            CustomDrawerButton(
-              text: "Dark and Light",
-              widget: Switch(
-                onChanged: (value) {
-                  setState(() {
-                    values = value;
-                  });
-                },
-                value: values,
-              ),
-            ),
+            ValueListenableBuilder(
+                valueListenable: Hive.box("settings").listenable(),
+                builder: (context, box, child) {
+                  final isDark = box.get("is_dark", defaultValue: false);
+                  return CustomDrawerButton(
+                    text: "Dark and Light",
+                    widget: Switch(
+                      onChanged: (value) {
+                        box.put("is_dark", value);
+                      },
+                      value: isDark,
+                    ),
+                  );
+                }),
             SizedBox(height: size.height * 0.023),
-            const CustomDrawerButton(
+            CustomDrawerButton(
               text: "Help center",
-              widget: Image(
+              widget: const Image(
                 image: AssetImage(AppIcons.helpCenter),
                 height: 24,
                 fit: BoxFit.cover,
               ),
+              onPressed: () {
+                String url = "https://t.me/erkinovv_dev";
+                launchUrl(
+                  Uri.parse(url),
+                  mode: LaunchMode.externalApplication,
+                );
+              },
             ),
             SizedBox(height: size.height * 0.023),
-            const CustomDrawerButton(
+            CustomDrawerButton(
               text: "Info",
-              widget: Image(
+              widget: const Image(
                 image: AssetImage(AppIcons.infoIcons),
                 height: 24,
                 fit: BoxFit.cover,
               ),
+              onPressed: () => infoDialog(context),
             ),
           ],
         ),

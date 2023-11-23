@@ -39,11 +39,11 @@ class _TodoPageState extends State<TodoPage> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: AppColors.backgroundsColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
                 Row(
@@ -83,8 +83,8 @@ class _TodoPageState extends State<TodoPage> {
                   controller: titleController,
                   hinText: "Title your todo. . .",
                   style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                        color: AppColors.whiteColor,
                         fontFamily: "OverlockSC",
+                        color: const Color(0xFF00a6fb),
                       ),
                   minLines: 1,
                   maxLines: 1,
@@ -93,12 +93,13 @@ class _TodoPageState extends State<TodoPage> {
                 CustomTextField(
                   controller: descriptionController,
                   hinText: "Description your todo. . .",
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        color: AppColors.whiteColor,
+                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                        color: const Color(0xFFffb627),
                         fontFamily: "OverlockSC",
+                    fontWeight: FontWeight.w500,
                       ),
                   minLines: 1,
-                  maxLines: 25,
+                  maxLines: 40,
                 ),
               ],
             ),

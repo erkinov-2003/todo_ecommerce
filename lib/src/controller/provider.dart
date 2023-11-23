@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-
 import '../model/todo_model.dart';
 import '../pages/home_page.dart';
 import '../service/firebase_service.dart';
 
 class MainController extends ChangeNotifier {
+
   void saveButton(
     TextEditingController titleController,
     TextEditingController descriptionController,
@@ -29,7 +29,7 @@ class MainController extends ChangeNotifier {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const HomePage(),
+            builder: (context) => const  HomePage(),
           ),
         );
       } catch (e) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const backgroundsColor = Color(0xff080c1e);
+  static const backgroundsColor = Color(0xFF080c1e);
   static const buttonColor = Color.fromARGB(255, 59, 59, 59);
   static const whiteColor = Colors.white;
   static const greyColor = Colors.grey;
