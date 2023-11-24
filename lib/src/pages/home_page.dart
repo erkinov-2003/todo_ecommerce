@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_ecommerce/src/common/constants/app_icons.dart';
-import 'package:todo_ecommerce/src/pages/details_page.dart';
 import 'package:todo_ecommerce/src/pages/todo_page.dart';
 import 'package:todo_ecommerce/src/view/custom_button.dart';
 import 'package:todo_ecommerce/src/view/custom_drawer.dart';
-import 'package:todo_ecommerce/src/view/delete_dialog.dart';
 
 import '../common/constants/app_colors.dart';
 
@@ -21,16 +19,6 @@ class _HomePageState extends State<HomePage> {
   final _firebaseReadData =
       FirebaseFirestore.instance.collection("todo_ecommerce").snapshots();
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   void navigationPage() {
     Navigator.push(
       context,
@@ -42,9 +30,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: AppColors.backgroundsColor,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(right: 15, bottom: 30),
@@ -64,9 +52,11 @@ class _HomePageState extends State<HomePage> {
         stream: _firebaseReadData,
         builder: (context, snapshot) {
           var docs = snapshot.data?.docs;
+
           if (snapshot.hasError) {
             return const Text("snapshots error hasdata");
           }
+
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -86,15 +76,15 @@ class _HomePageState extends State<HomePage> {
                               .textTheme
                               .headlineLarge!
                               .copyWith(
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xFF0096c7),
+                                color: AppColors.whiteColor,
+                                fontWeight: FontWeight.w500,
                                 fontFamily: "OverlockSC",
                               ),
                         ),
                         Builder(builder: (context) {
                           return CustomButton(
-                            images: AppIcons.personIcons,
-                            backgroundColor: const Color(0xFF3c096c),
+                            images: AppIcons.menuIcons,
+                            backgroundColor: AppColors.buttonColor,
                             onPressed: () {
                               Scaffold.of(context).openEndDrawer();
                             },
@@ -102,16 +92,16 @@ class _HomePageState extends State<HomePage> {
                         }),
                       ],
                     ),
-                    SizedBox(height: size.height * 0.035),
+                    const SizedBox(height: 30),
                     Expanded(
                       child: SizedBox(
-                        height: size.height * 0.708,
+                        height: 600,
                         child: ListView.builder(
                           itemCount: docs?.length,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
                             final indexDocs = docs?[index];
-                            final docsIndex = indexDocs?.id;
+
                             return Padding(
                               padding: const EdgeInsets.only(top: 10),
                               child: Column(
@@ -190,8 +180,6 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                       ),
                                     ),
-                                    onLongPress: () =>
-                                        deleteDialog(context, docsIndex!),
                                   ),
                                 ],
                               ),
