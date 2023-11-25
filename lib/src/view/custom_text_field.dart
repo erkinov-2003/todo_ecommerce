@@ -6,12 +6,15 @@ class CustomTextField extends StatelessWidget {
     required this.hinText,
     required this.style,
     required this.minLines,
-    required this.maxLines, required this.controller,
+    required this.maxLines,
+    required this.controller,
+    required this.color,
   });
   final String hinText;
   final int minLines;
   final int maxLines;
   final TextStyle style;
+  final Color color;
   final TextEditingController controller;
 
   @override
@@ -19,9 +22,9 @@ class CustomTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-            color: Colors.white,
             fontFamily: "Nunito-Regular",
             fontWeight: FontWeight.w500,
+            color: color,
           ),
       minLines: minLines,
       maxLines: maxLines,

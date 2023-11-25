@@ -1,40 +1,36 @@
 import 'package:flutter/material.dart';
-
-import '../model/todo_model.dart';
+import 'package:hive/hive.dart';
 import '../pages/home_page.dart';
-import '../service/firebase_service.dart';
+
 
 class MainController extends ChangeNotifier {
-
-  void saveButton(
-    TextEditingController titleController,
-    TextEditingController descriptionController,
+  void addTodoList(
+    TextEditingController title,
+    TextEditingController description,
     BuildContext context,
-  ) async {
-    if (titleController.text.isEmpty || descriptionController.text.isEmpty) {
+  ) {
+    if (title.text.isEmpty || description.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("please do not leave blank!"),
-          backgroundColor: Colors.red,
+          content: Text("Iltimos kataklarni bosh qoldirmang!"),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(8),
+              topRight: Radius.circular(8)
+            )
+          ),
         ),
       );
-    } else {
-      try {
-        final firebaseService = FireStorageService().createCollectionTodo;
-        final todoModel = TodoModel(
-          title: titleController.text,
-          description: descriptionController.text,
-        );
-        firebaseService(todoModel);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const  HomePage(),
-          ),
-        );
-      } catch (e) {
-        throw Exception("error firebase storage $e");
-      }
+    }else{
+      final box = Hive.box("settings");
+      box.put(title.text, description.text);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomePage(),
+        ),
+      );
+      notifyListeners();
     }
   }
 

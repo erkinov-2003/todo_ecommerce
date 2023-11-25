@@ -1,9 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:todo_ecommerce/src/common/constants/app_icons.dart';
+import 'package:todo_ecommerce/src/pages/details_page.dart';
 import 'package:todo_ecommerce/src/pages/todo_page.dart';
 import 'package:todo_ecommerce/src/view/custom_button.dart';
 import 'package:todo_ecommerce/src/view/custom_drawer.dart';
+import 'package:todo_ecommerce/src/view/delete_dialog.dart';
 
 import '../common/constants/app_colors.dart';
 
@@ -15,10 +17,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool values = true;
-  final _firebaseReadData =
-      FirebaseFirestore.instance.collection("todo_ecommerce").snapshots();
-
   void navigationPage() {
     Navigator.push(
       context,
@@ -30,9 +28,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
+    final hiveGet = Hive.box("settings");
+
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.backgroundsColor,
+      resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(right: 15, bottom: 30),
@@ -48,62 +50,49 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       endDrawer: const CustomDrawer(),
-      body: StreamBuilder(
-        stream: _firebaseReadData,
-        builder: (context, snapshot) {
-          var docs = snapshot.data?.docs;
-
-          if (snapshot.hasError) {
-            return const Text("snapshots error hasdata");
-          }
-
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            return SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Notes",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineLarge!
-                              .copyWith(
-                                color: AppColors.whiteColor,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: "OverlockSC",
-                              ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Notes",
+                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.textColor,
+                          fontFamily: "OverlockSC",
                         ),
-                        Builder(builder: (context) {
-                          return CustomButton(
-                            images: AppIcons.menuIcons,
-                            backgroundColor: AppColors.buttonColor,
-                            onPressed: () {
-                              Scaffold.of(context).openEndDrawer();
-                            },
-                          );
-                        }),
-                      ],
-                    ),
-                    const SizedBox(height: 30),
-                    Expanded(
-                      child: SizedBox(
-                        height: 600,
-                        child: ListView.builder(
-                          itemCount: docs?.length,
+                  ),
+                  Builder(builder: (context) {
+                    return CustomButton(
+                      images: AppIcons.personIcons,
+                      backgroundColor: const Color(0xFF3c096c),
+                      onPressed: () {
+                        Scaffold.of(context).openEndDrawer();
+                      },
+                    );
+                  }),
+                ],
+              ),
+              SizedBox(height: size.height * 0.035),
+              Expanded(
+                child: SizedBox(
+                  height: size.height * 0.708,
+                  child: ValueListenableBuilder(
+                      valueListenable: hiveGet.listenable(),
+                      builder: (context, box, child) {
+                        return ListView.builder(
+                          itemCount: hiveGet.keys.length,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
-                            final indexDocs = docs?[index];
+                            final itemsKeys = hiveGet.keys.toList()[index];
+                            final hiveValue = hiveGet.get(itemsKeys);
 
                             return Padding(
-                              padding: const EdgeInsets.only(top: 10),
+                              padding: const EdgeInsets.only(top: 12),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,15 +103,14 @@ class _HomePageState extends State<HomePage> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => DetailsPage(
-                                            title: indexDocs?["title"],
-                                            description:
-                                                indexDocs?["description"],
+                                            title: itemsKeys.toString(),
+                                            description: hiveValue.toString(),
                                           ),
                                         ),
                                       );
                                     },
                                     child: Card(
-                                      color: const Color(0xFF184e77),
+                                      color: const Color(0xFF22223b),
                                       shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(15),
@@ -137,7 +125,7 @@ class _HomePageState extends State<HomePage> {
                                         width: double.infinity,
                                         child: Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 20, top: 10, right: 10),
+                                              left: 20, top: 15, right: 10),
                                           child: Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
@@ -145,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                indexDocs?["title"],
+                                                itemsKeys.toString(),
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .titleLarge!
@@ -153,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                                                       color:
                                                           AppColors.whiteColor,
                                                       fontWeight:
-                                                          FontWeight.w500,
+                                                          FontWeight.w600,
                                                     ),
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
@@ -162,15 +150,15 @@ class _HomePageState extends State<HomePage> {
                                                 height: size.height * 0.011,
                                               ),
                                               Text(
-                                                indexDocs?["description"],
+                                                hiveValue.toString(),
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .titleLarge!
                                                     .copyWith(
-                                                      color: const Color(
-                                                          0xFFccff33),
+                                                      color:
+                                                          AppColors.yellowColor,
                                                       fontWeight:
-                                                          FontWeight.w500,
+                                                          FontWeight.w300,
                                                     ),
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
@@ -180,20 +168,20 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                       ),
                                     ),
+                                    onLongPress: () =>
+                                        deleteDialog(context, itemsKeys),
                                   ),
                                 ],
                               ),
                             );
                           },
-                        ),
-                      ),
-                    )
-                  ],
+                        );
+                      }),
                 ),
-              ),
-            );
-          }
-        },
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -35,10 +35,11 @@ class _TodoPageState extends State<TodoPage> {
   @override
   Widget build(BuildContext context) {
     final deleteButton = Provider.of<MainController>(context).deleteButton;
-    final saveButton = Provider.of<MainController>(context).saveButton;
+    final saveButton = Provider.of<MainController>(context).addTodoList;
     final size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: AppColors.backgroundsColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
@@ -67,7 +68,7 @@ class _TodoPageState extends State<TodoPage> {
                         SizedBox(width: size.width * 0.030),
                         CustomButton(
                           images: AppIcons.saveIcons,
-                          backgroundColor: AppColors.buttonColor,
+                            backgroundColor: AppColors.buttonColor,
                           onPressed: () => saveButton(
                             titleController,
                             descriptionController,
@@ -83,23 +84,25 @@ class _TodoPageState extends State<TodoPage> {
                   controller: titleController,
                   hinText: "Title your todo. . .",
                   style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                        fontFamily: "OverlockSC",
-                        color: const Color(0xFF00a6fb),
-                      ),
+                    fontFamily: "OverlockSC",
+                    color: AppColors.textColor,
+                  ),
                   minLines: 1,
                   maxLines: 1,
+                  color: AppColors.textColor,
                 ),
                 SizedBox(height: size.height * 0.035),
                 CustomTextField(
                   controller: descriptionController,
                   hinText: "Description your todo. . .",
                   style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                        color: const Color(0xFFffb627),
-                        fontFamily: "OverlockSC",
+                    color: const Color(0xFFffb627),
+                    fontFamily: "OverlockSC",
                     fontWeight: FontWeight.w500,
-                      ),
+                  ),
                   minLines: 1,
                   maxLines: 40,
+                  color: const Color(0xFFffb627),
                 ),
               ],
             ),

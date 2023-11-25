@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
-Future deleteDialog(BuildContext context, String clientId) {
+Future deleteDialog(BuildContext context, String key) {
   return showDialog(
     context: context,
     builder: (context) {
@@ -19,8 +19,8 @@ Future deleteDialog(BuildContext context, String clientId) {
           ),
           TextButton(
             onPressed: () {
-              final fireStorage = FirebaseFirestore.instance.collection("todo_ecommerce");
-              fireStorage.doc(clientId).delete();
+              final hiveBox = Hive.box("settings");
+              hiveBox.delete(key);
               Navigator.pop(context);
             },
             child: Text(

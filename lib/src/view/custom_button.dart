@@ -17,7 +17,7 @@ class CustomButton extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
-        fixedSize: Size(size.width * 0.063, size.height * 0.053),
+        fixedSize: Size(size.width * 0.025, size.height * 0.050),
         shape: const RoundedRectangleBorder(
           side: BorderSide(color: Colors.white, width: 0.3),
           borderRadius: BorderRadius.all(
